@@ -88,7 +88,8 @@ Neo4j 4.4.0
 Install the required packages using the following command:
 
 ```bash
-pip install -r requirements.txt
+    cd backend
+    pip install -r requirements.txt
 ```
 
 ## Setup the Project
@@ -119,5 +120,5 @@ pip install -r requirements.txt
 
 ```bash
     cd frontend
-    npm start # start NodeJS frontend
+    npm start # start nodejs frontend
 ```
