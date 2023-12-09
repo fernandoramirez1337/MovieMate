@@ -15,10 +15,10 @@ def login():
         return jsonify({'error': 'Users name is required'}), 400
     
     user_name = data['username']
-    if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":"user_name"}):
+    if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":user_name}):
         return jsonify({'error': 'Invalid username'}), 401
 
-    user = neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":"user_name"})
+    user = neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":user_name})
     print('User Data:', user[0])
     return user[0]
 
@@ -29,10 +29,10 @@ def suggest_users():
         return jsonify({'error': 'Users name is required'}), 400
     
     user_name = data['username']
-    if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":"user_name"}):
+    if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":user_name}):
         return jsonify({'error': 'Invalid username'}), 401
     
-    list_sugg_users = neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":"user_name"})
+    list_sugg_users = neo4j_conn.execute_query(Neo4jQueries.get_suggested_users(),{"user_name":user_name,"limit": 8})
     return list_sugg_users
 
 @app.route('/api/home/<int:user_id>')

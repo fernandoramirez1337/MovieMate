@@ -1,8 +1,9 @@
 // src/components/NewsFeed.js
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import './NewsFeed.css'; // Import your CSS file
+//import axios from 'axios';
+import './NewsFeed.css';
 import { suggestUsers } from './api';
 
 const buttonStyle = {
@@ -12,7 +13,7 @@ const buttonStyle = {
   border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
-  margin: '0 5px', // Add margin to create space between buttons
+  margin: '0 5px',
 };
 
 function NewsFeed() {

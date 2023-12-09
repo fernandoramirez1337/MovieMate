@@ -9,6 +9,7 @@ function SidebarRight() {
   return (
     <div className="sidebar sidebar-right">
       <h2>Sidebar Right</h2>
+      <h2>{userData.user.name}</h2>
       {/* Add sidebar content as needed */}
     </div>
   );
