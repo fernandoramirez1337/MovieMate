@@ -24,24 +24,24 @@ Neo4j 4.4.0
 
    - Run the following command to install Node.js version 20.10.0:
 
-```bash
-    nvm install 20.10.0
-```
+    ```bash
+        nvm install 20.10.0
+    ```
 
 3. **Use Node.js:**
 
    - Set Node.js version 20.10.0 as the default for your projects:
 
-```bash
-    nvm use 20.10.0
-```
+    ```bash
+        nvm use 20.10.0
+    ```
 
    - Verify the installation:
 
-```bash
-    node -v
-    npm -v
-```
+    ```bash
+        node -v
+        npm -v
+    ```
 
 ## Installing Python with pyenv
 
@@ -85,12 +85,12 @@ Neo4j 4.4.0
 ## Setup the Project
 
 1. **Setup Python Pip Packages:**
-
-Install the required packages using the following command:
+    
+    Install the required packages using the following command:
 
     ```bash
-        cd backend
-        pip install -r requirements.txt
+        cd frontend
+        npm install # install package.json dependencies
     ```
 
 2. **Setup NodeJS:**
