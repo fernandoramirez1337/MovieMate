@@ -57,68 +57,67 @@ Neo4j 4.4.0
 
    - Run the following command to install Python version 3.12.0:
 
-```bash
-    pyenv install 3.12.0
-```
+    ```bash
+        pyenv install 3.12.0
+    ```
 
 3. **Use Python:**
 
    - Set Python version 3.12.0 as the default for your projects:
 
-```bash
-    pyenv global 3.12.0 # or pyenv local 3.12.0 in the projects main directory
-```
+    ```bash
+        pyenv global 3.12.0 # or pyenv local 3.12.0 in the projects main directory
+    ```
 
    - Verify the local configuration by checking the `.python-version` file:
-```bash
-    cat .python-version
-```
+
+    ```bash
+        cat .python-version
+    ```
 
    - Verify the installation:
 
-```bash
-    python --version
-    pip --version
-```
-
-## Additional Information
-
-### Python Pip Packages
-
-Install the required packages using the following command:
-
-```bash
-    cd backend
-    pip install -r requirements.txt
-```
+    ```bash
+        python --version
+        pip --version
+    ```
 
 ## Setup the Project
 
-1. **Setup NodeJS:**
+1. **Setup Python Pip Packages:**
 
-```bash
-    cd frontend
-    npm install # install package.json dependencies
-```
+Install the required packages using the following command:
+
+    ```bash
+        cd backend
+        pip install -r requirements.txt
+    ```
+
+2. **Setup NodeJS:**
+
+    ```bash
+        cd frontend
+        npm install # install package.json dependencies
+    ```
 
 ## Start the Project
 
 1. **Start the database:**
 
-```bash
-    sudo neo4j start # start neo4j
-```
+    ```bash
+        sudo neo4j start # start neo4j
+    ```
 
 2. **Start backend:**
 
-```bash
-    cd backend
-    python app.py # start python backend
-```
+    ```bash
+        cd backend
+        python app.py # start python backend
+    ```
 
 3. **Start frontend:**
 
-```bash
-    cd frontend
-    npm start # start nodejs frontend
-```
+    ```bash
+        cd frontend
+        npm start # start nodejs frontend
+    ```
