@@ -14,6 +14,14 @@ class Neo4jQueries:
             "MATCH (m:Movie {title: $movie_title}) "
             "RETURN { title: m.title, imdbId: m.imdbId, plot: m.plot } AS movie"
         )
+    @staticmethod
+    def get_movies_rated_by_user():
+        return (
+            "MATCH (me:User {name: $user_name})-[my:RATED]->(m:Movie) "
+            "RETURN m.title AS movie, my.rating AS rating "
+            "ORDER BY rating DESC "
+            "LIMIT $limit "
+        )
     #SIMPLE GET RELATIONSHIP TYPE QUERIES
     @staticmethod
     def get_R_rated():
@@ -35,8 +43,14 @@ class Neo4jQueries:
             "LIMIT $limit "
         )
     @staticmethod
-    def get_suggested_movies():
-        return ()   
+    def get_popular_movies():
+        return (
+            "MATCH (m:Movie)<-[r:RATED]-() "
+            "MATCH (m:Movie)-[IN_GENRE]->(g:Genre) "
+            "RETURN COUNT(r) AS N_of_reviews, m.title as Movie, m.year as Year ,COLLECT(DISTINCT g.name) as Genre "
+            "ORDER BY N_of_reviews DESC "
+            "LIMIT $limit"
+        )   
     #CREATE NODE TYPE QUERIES
     @staticmethod
     def create_node_user():
