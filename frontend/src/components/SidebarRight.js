@@ -40,8 +40,8 @@ function SidebarRight() {
     // Call handleUserSuggest when the component mounts
     handleUserSuggest();
     handlePopularMovies();
-  }, []); 
-  
+  }, []);
+
   return (
     <div className="sidebar sidebar-right">
       <h2>For you</h2>
@@ -53,7 +53,7 @@ function SidebarRight() {
           <ul className="user-list">
             {listUsers.map((user, index) => (
               <li key={index} className="user-item">
-                {user.Friend_suggestion} <br /> Movies in common: {user.n} 
+                {user.Friend_suggestion} <br /> Movies in common: {user.n}
                 <button style={buttonStyle}>
                 Send Friend Request
               </button>
