@@ -30,4 +30,6 @@ export const ratedMovies = async (name) => {
     console.error('Error during user suggestion:', error);
     throw error; // Re-throw the error so that the component can handle it
   }
+
+  
 };

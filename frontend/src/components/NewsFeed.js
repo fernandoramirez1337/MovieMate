@@ -38,24 +38,7 @@ function NewsFeed() {
   return (
     <div className="news-feed">
       <h2>MovieMate Feed {userData.user.name}</h2>
-      {listUsers !== null ? (
-        listUsers.length > 0 ? (
-          <ul className="user-list">
-            {listUsers.map((user, index) => (
-              <li key={index} className="user-item">
-                {user.Friend_suggestion} <br /> Movies in common: {user.n} 
-                <button style={buttonStyle}>
-                Send Friend Request
-              </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No suggested users found.</p>
-        )
-      ) : (
-        <p>Loading...</p>
-      )}
+
     </div>
   );
 }
