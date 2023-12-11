@@ -51,3 +51,13 @@ export const suggestMoviesBasedOnActorInMovie = async (name) => {
     throw error; // Re-throw the error so that the component can handle it
   }
 };
+
+export const getGenresBasedOnPopularity = async (name) => {
+  try {
+    const response = await axios.post('/api/genres_based_on_popularity', { username: name });
+    return response.data;
+  } catch (error) {
+    console.error('Error during user suggestion:', error);
+    throw error; // Re-throw the error so that the component can handle it
+  }
+};

@@ -25,7 +25,7 @@ function SidebarLeft() {
         <div className="sidebar sidebar-left">
         <h2>User profile</h2>
         <h4>{userData.user.name}</h4>
-        <h2>My movies</h2>
+        <h2>My favorite movies</h2>
         {listRatedMovies !== null ? (
         listRatedMovies.length > 0 ? (
           <ul className="user-list">

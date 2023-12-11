@@ -1,7 +1,7 @@
 // src/components/SidebarRight.js
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { suggestUsers, popularMovies, suggestMoviesBasedOnActor, suggestMoviesBasedOnActorInMovie } from './api';
+import { suggestUsers, popularMovies, suggestMoviesBasedOnActor, getGenresBasedOnPopularity } from './api';
 
 const buttonStyle = {
   backgroundColor: '#4caf50',
@@ -19,7 +19,7 @@ function SidebarRight() {
   const [listUsers, setUsers] = useState(null);
   const [listPopMovies, setPopMovies] = useState(null);
   const [listSugMoviesBasedOnActor, setSugMoviesBasedOnActor] = useState(null);
-  const [listSugMoviesBasedOnActorInMovie, setSugMoviesBasedOnActorInMovie] = useState(null);
+  const [listGenresBasedOnPopularity, setGenresBasedOnPopularity] = useState(null);
 
   const handleUserSuggest = async () => {
     try {
@@ -47,10 +47,10 @@ function SidebarRight() {
     }
   };
 
-  const handleSuggestMoviesBasedOnActorInMovie = async () => {
+  const handleGenresBasedOnPopularity = async () => {
     try {
-      const response = await suggestMoviesBasedOnActorInMovie(userData.user.name);
-      setSugMoviesBasedOnActorInMovie(response);
+      const response = await getGenresBasedOnPopularity(userData.user.name);
+      setGenresBasedOnPopularity(response);
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -61,7 +61,7 @@ function SidebarRight() {
     handleUserSuggest();
     handlePopularMovies();
     handleSuggestMoviesBasedOnActor();
-    handleSuggestMoviesBasedOnActorInMovie();
+    handleGenresBasedOnPopularity();
   }, []); 
   
   return (
@@ -119,6 +119,22 @@ function SidebarRight() {
         <p>Loading...</p>
       )}
       {/* Add sidebar content as needed */}
+      <h2>Popular Genres</h2>
+      {listGenresBasedOnPopularity !== null ? (
+        listGenresBasedOnPopularity.length > 0 ? (
+          <ul className="user-list">
+            {listGenresBasedOnPopularity.map((user, index) => (
+              <li key={index} className="user-item">
+                {user.Genre} ({user.ReviewCount})
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No popular genres found.</p>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }

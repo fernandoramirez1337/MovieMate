@@ -50,7 +50,8 @@ class Neo4jQueries:
             "RETURN COUNT(r) AS N_of_reviews, m.title as Movie, m.year as Year ,COLLECT(DISTINCT g.name) as Genre "
             "ORDER BY N_of_reviews DESC "
             "LIMIT $limit"
-        )   
+        ) 
+    @staticmethod  
     def get_suggested_movies_based_on_actors():
         return (
             "MATCH (u:User {name: $user_name})-[r:RATED]->(m:Movie) "
@@ -62,6 +63,7 @@ class Neo4jQueries:
             "ORDER BY Rating DESC, n_ratings DESC "
             "LIMIT $limit"
         )
+    @staticmethod
     def get_suggested_movies_based_on_actor_in_movie():
         return (
             "MATCH (u:User {name: 'Margaret Allen'})-[r:RATED]->(m:Movie) "
@@ -74,6 +76,15 @@ class Neo4jQueries:
             "RETURN MyRatedMovie, Actor, RecommendedMovie, Plot, Year, Poster, Director "
             "ORDER BY RAND() "
             "LIMIT $limit "
+        )
+    @staticmethod
+    def get_genres_based_on_popularity():
+        return (
+            "MATCH (m:Movie)-[:IN_GENRE]->(g:Genre) "
+            "MATCH (u:User)-[r:RATED]->(m) "
+            "RETURN g.name AS Genre, COUNT(r) AS ReviewCount "
+            "ORDER BY ReviewCount DESC "
+            "LIMIT $limit"
         )
     #CREATE NODE TYPE QUERIES
     @staticmethod
