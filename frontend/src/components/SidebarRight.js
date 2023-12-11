@@ -1,7 +1,7 @@
 // src/components/SidebarRight.js
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { suggestUsers, popularMovies, suggestMoviesBasedOnActor, getGenresBasedOnPopularity } from './api';
+import { suggestUsers, popularMovies, suggestMoviesBasedOnRandom, getGenresBasedOnPopularity } from './api';
 
 const buttonStyle = {
   backgroundColor: '#4caf50',
@@ -18,7 +18,7 @@ function SidebarRight() {
   const userData = location.state ? location.state : null;
   const [listUsers, setUsers] = useState(null);
   const [listPopMovies, setPopMovies] = useState(null);
-  const [listSugMoviesBasedOnActor, setSugMoviesBasedOnActor] = useState(null);
+  const [listSugMoviesBasedOnRandom, setSugMoviesBasedOnRandom] = useState(null);
   const [listGenresBasedOnPopularity, setGenresBasedOnPopularity] = useState(null);
 
   const handleUserSuggest = async () => {
@@ -38,10 +38,10 @@ function SidebarRight() {
     }
   };
 
-  const handleSuggestMoviesBasedOnActor = async () => {
+  const handleSuggestMoviesBasedOnRandom = async () => {
     try {
-      const response = await suggestMoviesBasedOnActor(userData.user.name);
-      setSugMoviesBasedOnActor(response);
+      const response = await suggestMoviesBasedOnRandom(userData.user.name);
+      setSugMoviesBasedOnRandom(response);
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -60,20 +60,20 @@ function SidebarRight() {
     // Call handleUserSuggest when the component mounts
     handleUserSuggest();
     handlePopularMovies();
-    handleSuggestMoviesBasedOnActor();
+    handleSuggestMoviesBasedOnRandom();
     handleGenresBasedOnPopularity();
   }, []); 
   
   return (
     <div className="sidebar sidebar-right">
 
-      <h2>Recommended Movies</h2>
-      {listSugMoviesBasedOnActor !== null ? (
-        listSugMoviesBasedOnActor.length > 0 ? (
+      <h2>I feel lucky</h2>
+      {listSugMoviesBasedOnRandom !== null ? (
+        listSugMoviesBasedOnRandom.length > 0 ? (
           <ul className="user-list">
-            {listSugMoviesBasedOnActor.map((user, index) => (
+            {listSugMoviesBasedOnRandom.map((user, index) => (
               <li key={index} className="user-item">
-                {user.RecommendedMovie} <br />
+                {user.Movie} ({user.Year}) <br />
               </li>
             ))}
           </ul>

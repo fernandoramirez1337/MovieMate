@@ -62,7 +62,7 @@ def rated_movies():
     list_rated_movies = neo4j_conn.execute_query(Neo4jQueries.get_movies_rated_by_user(),{"user_name":user_name, "limit": 6})
     return list_rated_movies
 
-@app.route('/api/suggest_movies_based_on_actor', methods=['POST'])
+@app.route('/api/suggest_movies_based_on_random', methods=['POST'])
 def suggest_movies_based_on_actor():
     data = request.get_json()
     if 'username' not in data:
@@ -72,7 +72,7 @@ def suggest_movies_based_on_actor():
     if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":user_name}):
         return jsonify({'error': 'Invalid username'}), 401
     
-    list_suggested_movies_based_on_actor = neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_actors(),{"user_name":user_name, "limit": 6})
+    list_suggested_movies_based_on_actor = neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_random(),{"user_name":user_name, "limit": 6})
     return list_suggested_movies_based_on_actor
 
 @app.route('/api/suggest_movies_based_on_actor_in_movie', methods=['POST'])
@@ -125,6 +125,19 @@ def suggest_latest_movies_based_on_director():
         return jsonify({'error': 'Invalid username'}), 401
     
     list = neo4j_conn.execute_query(Neo4jQueries.suggest_latest_movies_based_on_director(),{"user_name":user_name, "limit": 1})
+    return list
+
+@app.route('/api/suggest_latest_movies_based_on_genre', methods=['POST'])
+def suggest_latest_movies_based_on_genre():
+    data = request.get_json()
+    if 'username' not in data:
+        return jsonify({'error': 'Users name is required'}), 400
+    
+    user_name = data['username']
+    if not neo4j_conn.execute_query(Neo4jQueries.get_user_by_name(),{"user_name":user_name}):
+        return jsonify({'error': 'Invalid username'}), 401
+    
+    list = neo4j_conn.execute_query(Neo4jQueries.suggest_latest_movies_based_on_genre(),{"user_name":user_name, "limit": 1})
     return list
 
 @app.route('/api/home/<int:user_id>')

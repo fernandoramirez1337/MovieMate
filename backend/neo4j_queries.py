@@ -52,16 +52,15 @@ class Neo4jQueries:
             "LIMIT $limit"
         ) 
     @staticmethod  
-    def get_suggested_movies_based_on_actors():
+    def get_suggested_movies_based_on_random():
         return (
-            "MATCH (u:User {name: $user_name})-[r:RATED]->(m:Movie) "
-            "MATCH (m)-[:ACTED_IN]-(a:Actor) "
-            "MATCH (a)-[:ACTED_IN]-(mm:Movie) "
-            "MATCH (mm)-[rr:RATED]-() "
-            "WHERE m <> mm "
-            "RETURN u.name AS User, m.title AS MyRatedMovie, r.rating AS Rating, a.name AS Actor, mm.title AS RecommendedMovie, COUNT(rr) AS n_ratings "
-            "ORDER BY Rating DESC, n_ratings DESC "
-            "LIMIT $limit"
+            "MATCH (u:User {name: $user_name}) "
+            "MATCH (m:Movie) "
+            "WHERE NOT (u)-[:RATED]->(m) "
+            "WITH m.title AS Movie, m.year AS Year "
+            "RETURN Movie, Year "
+            "ORDER BY RAND() " 
+            "LIMIT $limit;"
         )
     @staticmethod
     def get_suggested_movies_based_on_actor_in_movie():
@@ -107,6 +106,17 @@ class Neo4jQueries:
             "RETURN mm.title AS Movie, mm.year AS Year, d.name AS Director "
             "ORDER BY mm.year DESC, RAND() "
             "LIMIT $limit "
+        )
+    @staticmethod
+    def suggest_latest_movies_based_on_genre():
+        return (
+            "MATCH (u:User {name: $user_name})-[r:RATED]-(m:Movie) "
+            "MATCH (m)-[:IN_GENRE]-(g:Genre) "
+            "MATCH (g)-[:IN_GENRE]-(mm:Movie) "
+            "WHERE m <> mm AND exists(mm.year) AND r.rating <= 4.0 "
+            "RETURN DISTINCT mm.title AS Movie, mm.year AS Year, g.name AS Genre "
+            "ORDER BY mm.year DESC, RAND() "
+            "LIMIT $limit"
         )
     #CREATE NODE TYPE QUERIES
     @staticmethod

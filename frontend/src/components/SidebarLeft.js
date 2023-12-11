@@ -1,7 +1,7 @@
 // src/components/SidebarLeft.js
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ratedMovies, suggestLatestMoviesBasedOnActor, suggestLatestMoviesBasedOnDirector } from './api';
+import { ratedMovies, suggestLatestMoviesBasedOnActor, suggestLatestMoviesBasedOnDirector, suggestLatestMoviesBasedOnGenre } from './api';
 
 function SidebarLeft() {
     const location = useLocation();
@@ -9,6 +9,7 @@ function SidebarLeft() {
     const [listRatedMovies, setRatedMovies] = useState(null);
     const [listLatestMoviesBasedOnActor, setLatestMoviesBasedOnActor] = useState(null);
     const [listLatestMoviesBasedOnDirector, setLatestMoviesBasedOnDirector] = useState(null);
+    const [listLatestMoviesBasedOnGenre, setLatestMoviesBasedOnGenre] = useState(null);
     const handleRatedMovies = async () => {
         try {
           const response = await ratedMovies(userData.user.name);
@@ -33,12 +34,21 @@ function SidebarLeft() {
         console.error('Error during login:', error);
       }
     };
+    const handleLatestMoviesBasedOnGenre = async () => {
+      try {
+        const response = await suggestLatestMoviesBasedOnGenre(userData.user.name);
+        setLatestMoviesBasedOnGenre(response);
+      } catch (error) {
+        console.error('Error during login:', error);
+      }
+    };
 
     useEffect(() => {
     // Call handleUserSuggest when the component mounts
     handleRatedMovies();
     handleLatestMoviesBasedOnActor();
     handleLatestMoviesBasedOnDirector();
+    handleLatestMoviesBasedOnGenre();
     }, []); 
 
     return (
@@ -85,6 +95,22 @@ function SidebarLeft() {
             {listLatestMoviesBasedOnDirector.map((user, index) => (
               <li key={index} className="user-item">
                 Checkout {user.Director}'s latest movie!<br/>
+                {user.Movie} ({user.Year})
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No rated movies found.</p>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
+            {listLatestMoviesBasedOnGenre !== null ? (
+        listLatestMoviesBasedOnGenre.length > 0 ? (
+          <ul className="user-list">
+            {listLatestMoviesBasedOnGenre.map((user, index) => (
+              <li key={index} className="user-item">
+                Because you love {user.Genre}!<br/>
                 {user.Movie} ({user.Year})
               </li>
             ))}
