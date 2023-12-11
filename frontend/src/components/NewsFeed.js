@@ -40,6 +40,7 @@ function NewsFeed({ news }) {
       {listSugMoviesBasedOnActorInMovie && (
       <div className="news-feed">
         <h3>Movie Suggestions</h3>
+        <div className="column-container">
         {listSugMoviesBasedOnActorInMovie.map((user, index) => (
           <div key={index} className="news-item">
             <h4>Because you loved {user.Actor} in {user.MyRatedMovie}</h4>
@@ -49,6 +50,7 @@ function NewsFeed({ news }) {
             <p>Directed by: {user.Director}</p>
           </div>
         ))}
+      </div>
       </div>
     )}
 
