@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 //import axios from 'axios';
 import './NewsFeed.css';
-import { suggestUsers } from './api';
+import { suggestUsers, suggestMoviesBasedOnActorInMovie } from './api';
 
 const buttonStyle = {
   backgroundColor: '#4caf50',
@@ -16,10 +16,11 @@ const buttonStyle = {
   margin: '0 5px',
 };
 
-function NewsFeed() {
+function NewsFeed({ news }) {
   const location = useLocation();
   const userData = location.state ? location.state : null;
   const [listUsers, setUsers] = useState(null);
+  const [listSugMoviesBasedOnActorInMovie, setSugMoviesBasedOnActorInMovie] = useState(null);
 
   const handleUserSuggest = async () => {
     try {
@@ -30,14 +31,37 @@ function NewsFeed() {
     }
   };
 
+  const handleSuggestMoviesBasedOnActorInMovie = async () => {
+    try {
+      const response = await suggestMoviesBasedOnActorInMovie(userData.user.name);
+      setSugMoviesBasedOnActorInMovie(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
   useEffect(() => {
     // Call handleUserSuggest when the component mounts
-    handleUserSuggest();
+    handleSuggestMoviesBasedOnActorInMovie();
+    //handleUserSuggest();
   }, []); 
 
   return (
     <div className="news-feed">
-      <h2>MovieMate Feed {userData.user.name}</h2>
+      {listSugMoviesBasedOnActorInMovie && (
+      <div className="news-feed">
+        <h3>Movie Suggestions</h3>
+        {listSugMoviesBasedOnActorInMovie.map((user, index) => (
+          <div key={index} className="news-item">
+            <h4>Because you loved {user.Actor} in {user.MyRatedMovie}</h4>
+            <p>{user.RecommendedMovie} ({user.Year})</p>
+            <p>{user.Plot}</p>
+            <img src={user.Poster} style={{ maxWidth: '10%', height: 'auto' }} />
+            <p>Directed by: {user.Director}</p>
+          </div>
+        ))}
+      </div>
+    )}
 
     </div>
   );

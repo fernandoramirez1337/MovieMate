@@ -82,10 +82,10 @@ def suggest_movies_based_on_actor_in_movie():
         return jsonify({'error': 'Users name is required'}), 400
     
     user_name = data['username']
-    if not neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_actor_in_movie(),{"user_name":user_name}):
+    if not neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_actor_in_movie(),{"user_name":user_name, "limit":5}):
         return jsonify({'error': 'Invalid username'}), 401
     
-    list_suggested_movies_based_on_actor_in_movie = neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_actors(),{"user_name":user_name, "limit": 6})
+    list_suggested_movies_based_on_actor_in_movie = neo4j_conn.execute_query(Neo4jQueries.get_suggested_movies_based_on_actor_in_movie(),{"user_name":user_name, "limit": 6})
     return list_suggested_movies_based_on_actor_in_movie
 
 @app.route('/api/home/<int:user_id>')

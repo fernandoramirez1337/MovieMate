@@ -68,11 +68,12 @@ class Neo4jQueries:
             "MATCH (m)-[:ACTED_IN]-(a:Actor) "
             "MATCH (a)-[:ACTED_IN]-(mm:Movie) "
             "MATCH (mm)-[rr:RATED]-() "
+            "MATCH (mm)-[:DIRECTED]-(d:Director) "
             "WHERE m <> mm AND r.rating >= 4.0 "
-            "WITH u, m.title AS MyRatedMovie, r.rating AS Rating, a.name AS Actor, COLLECT(DISTINCT mm.title) AS RecommendedMovies, COUNT(rr) AS n_ratings "
-            "RETURN u.name AS User, MyRatedMovie, Rating, Actor, RecommendedMovies, n_ratings "
+            "WITH u, m.title AS MyRatedMovie, a.name AS Actor, mm.title AS RecommendedMovie, mm.plot AS Plot, mm.year AS Year, mm.poster AS Poster, d.name AS Director  "
+            "RETURN MyRatedMovie, Actor, RecommendedMovie, Plot, Year, Poster, Director "
             "ORDER BY RAND() "
-            "LIMIT 1 "
+            "LIMIT $limit "
         )
     #CREATE NODE TYPE QUERIES
     @staticmethod
