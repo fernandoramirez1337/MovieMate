@@ -3,13 +3,13 @@ from neo4j_connect import Neo4jConnection
 from neo4j_queries import Neo4jQueries
 
 app = Flask(__name__)
-neo4j_conn = Neo4jConnection("neo4j://localhost:7687", "neo4j", "4jneo")
-#neo4j_conn = Neo4jConnection("bolt://3.215.134.19:7687", "neo4j", "sister-focuses-spills")
+# neo4j_conn = Neo4jConnection("neo4j://localhost:7687", "neo4j", "4jneo")
+neo4j_conn = Neo4jConnection("bolt://3.215.134.19:7687", "neo4j", "sister-focuses-spills")
 neo4j_conn.connect()
 
 
 # APIs
-@app.route("/api        /login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login():
     data = request.get_json()
     if "username" not in data:
