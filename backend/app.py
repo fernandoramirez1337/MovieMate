@@ -140,6 +140,23 @@ def suggest_latest_movies_based_on_genre():
     list = neo4j_conn.execute_query(Neo4jQueries.suggest_latest_movies_based_on_genre(),{"user_name":user_name, "limit": 1})
     return list
 
+@app.route("/api/recommend_movie_genre", methods=["POST"])
+def recommend_movie_genre():
+    data = request.get_json()
+    if "username" not in data:
+        return jsonify({"error": "Users name is required"}), 400
+
+    user_name = data["username"]
+    if not neo4j_conn.execute_query(
+        Neo4jQueries.get_user_by_name(), {"user_name": user_name}
+    ):
+        return jsonify({"error": "Invalid username"}), 401
+
+    recommended_movie = neo4j_conn.execute_query(
+        Neo4jQueries.get_recommended_movie_by_favorite_genre(), {"user_name": user_name, "limit": 6}
+    )
+    return recommended_movie
+
 @app.route('/api/home/<int:user_id>')
 def home(user_id):
     return jsonify({'message': f'Welcome to the home page, user {user_id}!'})

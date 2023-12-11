@@ -91,3 +91,13 @@ export const suggestLatestMoviesBasedOnGenre = async (name) => {
     throw error; // Re-throw the error so that the component can handle it
   }
 };
+
+export const RecommendMovieGenre = async (name) => {
+  try {
+    const response = await axios.post('/api/recommend_movie_genre', { username: name });
+    return response.data;
+  } catch (error) {
+    console.error('Error during user suggestion:', error);
+    throw error; // Re-throw the error so that the component can handle it
+  }
+};

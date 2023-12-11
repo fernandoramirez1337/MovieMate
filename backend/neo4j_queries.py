@@ -118,6 +118,27 @@ class Neo4jQueries:
             "ORDER BY mm.year DESC, RAND() "
             "LIMIT $limit"
         )
+    @staticmethod
+    def get_recommended_movie_by_favorite_genre():
+        return (
+            "MATCH (u:User {name: $user_name}) - [r:RATED]-(m:Movie) - [: IN_GENRE]-(genre:Genre) "
+            "WITH u, genre, COUNT(m) AS moviesRated "
+            "ORDER BY moviesRated DESC "
+            "LIMIT 1 "
+
+            "MATCH (u)-[r2: RATED]-(m2:Movie)-[: IN_GENRE]-(genre) "
+            "WITH u, genre, COLLECT(m2) AS ratedMovies "
+
+            "MATCH(unratedMovie: Movie)-[: IN_GENRE]-(genre) "
+            "WHERE NOT(u) - [: RATED]-(unratedMovie) "
+            
+            "MATCH (director:Director)-[:DIRECTED]-(unratedMovie)"
+            
+            "RETURN unratedMovie.title AS title, unratedMovie.poster AS poster, unratedMovie.plot AS plot, "
+            "unratedMovie.year AS year, genre.name AS FavoriteGenre, director.name AS director "
+            "ORDER BY RAND() "
+            "LIMIT $limit; "
+            )
     #CREATE NODE TYPE QUERIES
     @staticmethod
     def create_node_user():

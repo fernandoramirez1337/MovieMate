@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 //import axios from 'axios';
 import './NewsFeed.css';
-import { suggestMoviesBasedOnActorInMovie } from './api';
+import { suggestMoviesBasedOnActorInMovie, RecommendMovieGenre } from './api';
 
 const buttonStyle = {
   backgroundColor: '#4caf50',
@@ -19,6 +19,7 @@ const buttonStyle = {
 function NewsFeed({ news }) {
   const location = useLocation();
   const userData = location.state ? location.state : null;
+  const [listRecommendedMovie, setRecommendedMovie] = useState(null);
   const [listSugMoviesBasedOnActorInMovie, setSugMoviesBasedOnActorInMovie] = useState(null);
 
   const handleSuggestMoviesBasedOnActorInMovie = async () => {
@@ -30,13 +31,43 @@ function NewsFeed({ news }) {
     }
   };
 
+  const handleRecommendedMovieByGenre = async () => {
+    try {
+      const response = await RecommendMovieGenre(userData.user.name);
+      setRecommendedMovie(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
   useEffect(() => {
     // Call handleUserSuggest when the component mounts
+    handleRecommendedMovieByGenre();
     handleSuggestMoviesBasedOnActorInMovie();
   }, []); 
 
   return (
     <div className="news-feed">
+            {listRecommendedMovie && listRecommendedMovie.length > 0 && (
+        <div className="news-feed">
+          <h3>For you: {listRecommendedMovie[0].FavoriteGenre}</h3>
+          <div className="column-container">
+            {listRecommendedMovie.map((user, index) => (
+              <div key={index} className="news-item">
+                <p>{user.title} ({user.year})</p>
+                <p>{user.plot}</p>
+                <img
+                  src={user.poster}
+                  alt={user.title}
+                  style={{ maxWidth: '20%', height: 'auto' }}
+                />
+                <p>Directed by: {user.director}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {listSugMoviesBasedOnActorInMovie && (
       <div className="news-feed">
         <h3>Movie Suggestions</h3>
