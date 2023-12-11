@@ -51,6 +51,29 @@ class Neo4jQueries:
             "ORDER BY N_of_reviews DESC "
             "LIMIT $limit"
         )   
+    def get_suggested_movies_based_on_actors():
+        return (
+            "MATCH (u:User {name: $user_name})-[r:RATED]->(m:Movie) "
+            "MATCH (m)-[:ACTED_IN]-(a:Actor) "
+            "MATCH (a)-[:ACTED_IN]-(mm:Movie) "
+            "MATCH (mm)-[rr:RATED]-() "
+            "WHERE m <> mm "
+            "RETURN u.name AS User, m.title AS MyRatedMovie, r.rating AS Rating, a.name AS Actor, mm.title AS RecommendedMovie, COUNT(rr) AS n_ratings "
+            "ORDER BY Rating DESC, n_ratings DESC "
+            "LIMIT $limit"
+        )
+    def get_suggested_movies_based_on_actor_in_movie():
+        return (
+            "MATCH (u:User {name: 'Margaret Allen'})-[r:RATED]->(m:Movie) "
+            "MATCH (m)-[:ACTED_IN]-(a:Actor) "
+            "MATCH (a)-[:ACTED_IN]-(mm:Movie) "
+            "MATCH (mm)-[rr:RATED]-() "
+            "WHERE m <> mm AND r.rating >= 4.0 "
+            "WITH u, m.title AS MyRatedMovie, r.rating AS Rating, a.name AS Actor, COLLECT(DISTINCT mm.title) AS RecommendedMovies, COUNT(rr) AS n_ratings "
+            "RETURN u.name AS User, MyRatedMovie, Rating, Actor, RecommendedMovies, n_ratings "
+            "ORDER BY RAND() "
+            "LIMIT 1 "
+        )
     #CREATE NODE TYPE QUERIES
     @staticmethod
     def create_node_user():

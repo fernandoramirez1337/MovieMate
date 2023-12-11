@@ -1,7 +1,7 @@
 // src/components/SidebarRight.js
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { suggestUsers, popularMovies } from './api';
+import { suggestUsers, popularMovies, suggestMoviesBasedOnActor, suggestMoviesBasedOnActorInMovie } from './api';
 
 const buttonStyle = {
   backgroundColor: '#4caf50',
@@ -18,6 +18,8 @@ function SidebarRight() {
   const userData = location.state ? location.state : null;
   const [listUsers, setUsers] = useState(null);
   const [listPopMovies, setPopMovies] = useState(null);
+  const [listSugMoviesBasedOnActor, setSugMoviesBasedOnActor] = useState(null);
+  const [listSugMoviesBasedOnActorInMovie, setSugMoviesBasedOnActorInMovie] = useState(null);
 
   const handleUserSuggest = async () => {
     try {
@@ -36,17 +38,51 @@ function SidebarRight() {
     }
   };
 
+  const handleSuggestMoviesBasedOnActor = async () => {
+    try {
+      const response = await suggestMoviesBasedOnActor(userData.user.name);
+      setSugMoviesBasedOnActor(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
+  const handleSuggestMoviesBasedOnActorInMovie = async () => {
+    try {
+      const response = await suggestMoviesBasedOnActorInMovie(userData.user.name);
+      setSugMoviesBasedOnActorInMovie(response);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
+
   useEffect(() => {
     // Call handleUserSuggest when the component mounts
     handleUserSuggest();
     handlePopularMovies();
+    handleSuggestMoviesBasedOnActor();
+    handleSuggestMoviesBasedOnActorInMovie();
   }, []); 
   
   return (
     <div className="sidebar sidebar-right">
-      <h2>For you</h2>
-      <h4>{userData.user.name}</h4>
+
       <h2>Recommended Movies</h2>
+      {listSugMoviesBasedOnActor !== null ? (
+        listSugMoviesBasedOnActor.length > 0 ? (
+          <ul className="user-list">
+            {listSugMoviesBasedOnActor.map((user, index) => (
+              <li key={index} className="user-item">
+                {user.RecommendedMovie} <br />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No suggested movies found.</p>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
       <h2>Connect with Friends</h2>
       {listUsers !== null ? (
         listUsers.length > 0 ? (

@@ -30,6 +30,24 @@ export const ratedMovies = async (name) => {
     console.error('Error during user suggestion:', error);
     throw error; // Re-throw the error so that the component can handle it
   }
+};
 
-  
+export const suggestMoviesBasedOnActor = async (name) => {
+  try {
+    const response = await axios.post('/api/suggest_movies_based_on_actor', { username: name });
+    return response.data;
+  } catch (error) {
+    console.error('Error during user suggestion:', error);
+    throw error; // Re-throw the error so that the component can handle it
+  }
+};
+
+export const suggestMoviesBasedOnActorInMovie = async (name) => {
+  try {
+    const response = await axios.post('/api/suggest_movies_based_on_actor_in_movie', { username: name });
+    return response.data;
+  } catch (error) {
+    console.error('Error during user suggestion:', error);
+    throw error; // Re-throw the error so that the component can handle it
+  }
 };
