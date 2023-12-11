@@ -1,8 +1,11 @@
 // App.js
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import HomePage from './HomePage';
+import SearchPage from './SearchPage';
+// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 
 const containerStyle = {
   width: '300px',
@@ -88,14 +91,28 @@ function LoginPage() {
 }
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const handleLogin = (userData) => {
+    // Assume a successful login for simplicity
+    setLoggedInUser(userData);
+  };
+
   return (
     <Router>
       <Routes>
+
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route
+        path="/search"
+        element={<SearchPage />}
+        />
+
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+// render={(props) => <SearchPage {...props} loggedInUser={loggedInUser} />}
